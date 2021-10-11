@@ -1,8 +1,8 @@
-(function () {
+function main() {
     var myConnector = tableau.makeConnector();
 
     myConnector.getSchema = function (schemaCallback) {
-        var cols = [{
+        const test_cols = [{
             id: "date",
             dataType: tableau.dataTypeEnum.string
         }, {
@@ -10,21 +10,19 @@
             alias: "price data",
             dataType: tableau.dataTypeEnum.float
         }];
-
-        var tableSchema = {
+        
+        const testSchema =  {
             id: "testFeed",
-            alias: "Just for testing.",
-            columns: cols
+            alias: "Test Table",
+            columns: test_cols
         };
-
-        schemaCallback([tableSchema]);
+        
+        schemaCallback([testSchema]);
     };
 
     myConnector.getData = function (table, doneCallback) {
         $.getJSON("http://127.0.0.1:5000/test", function (resp) {
-
             const tableData = resp.data;
-
             table.appendRows(tableData);
             doneCallback();
         });
@@ -34,9 +32,11 @@
 
     $(document).ready(function () {
         $("#ATLASsubmitButton").click(function () {
-            tableau.connectionName = "ATLAS Main Feed";
+            tableau.connectionName = "ATLAS Analysis Feed";
             tableau.submit();
         });
     });
 
-})();
+};
+
+main()

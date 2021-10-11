@@ -1,0 +1,25 @@
+{
+  "name": "is453-project",
+  "version": "1.0.0",
+  "description": "Servers for Financial Analysis",
+  "main": "WDC.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon WDC.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanyaoying/IS453-Project.git"
+  },
+  "author": "chanyaoying",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chanyaoying/IS453-Project/issues"
+  },
+  "homepage": "https://github.com/chanyaoying/IS453-Project#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.13",
+    "serve-static": "^1.14.1"
+  }
+}

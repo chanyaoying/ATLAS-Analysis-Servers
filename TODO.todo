@@ -1,2 +1,3 @@
-1. convert complex microservice to Node
-2. include auto arima service
+- convert complex microservice to Node
+- multi table (https://tableau.github.io/webdataconnector/docs/wdc_multi_table_tutorial.html)
+- include auto arima service
