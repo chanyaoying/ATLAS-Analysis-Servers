@@ -1,3 +1,2 @@
-- docker compose
 - multi table (https://tableau.github.io/webdataconnector/docs/wdc_multi_table_tutorial.html)
 - include auto arima service

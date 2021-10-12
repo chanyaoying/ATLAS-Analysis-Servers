@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+    
+    ATLAS_Orchestrator:
+        image: yaoyingsmu/atlas_orchestrator:latest
+        restart: always
+        container_name: ATLAS_Orchestrator
+        ports:
+            - "5000:5000"
+    
+    WDC:
+        image: yaoyingsmu/wdc:latest
+        restart: always
+        container_name: ATLAS_WebDataConnector
+        ports:
+            - "8888:8888"
+        depends_on:
+            - ATLAS_Orchestrator
