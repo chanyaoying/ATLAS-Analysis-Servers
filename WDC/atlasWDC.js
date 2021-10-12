@@ -21,7 +21,7 @@ function main() {
     };
 
     myConnector.getData = function (table, doneCallback) {
-        $.getJSON("http://127.0.0.1:5000/test", function (resp) {
+        $.getJSON("http://localhost:5000/analyse/test/AAPL,FB,AMZN", function (resp) {
             const tableData = resp.data;
             table.appendRows(tableData);
             doneCallback();
