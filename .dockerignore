@@ -1,2 +1,4 @@
-../node_modules
-../npm-debug.logdocker ps
+./node_modules
+./npm-debug.logdocker ps
+./venv
+./TODO.todo

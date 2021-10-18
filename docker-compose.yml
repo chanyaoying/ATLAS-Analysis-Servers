@@ -4,13 +4,19 @@ services:
     
     ATLAS_Orchestrator:
         image: yaoyingsmu/atlas_orchestrator:latest
+        build: 
+            context: .
+            dockerfile: dockerfiles/ATLAS_Orchestrator.Dockerfile
         restart: always
         container_name: ATLAS_Orchestrator
         ports:
             - "5000:5000"
     
     WDC:
-        image: yaoyingsmu/wdc:latest
+        image: yaoyingsmu/atlas_webdataconnector:latest
+        build: 
+            context: .
+            dockerfile: dockerfiles/WDC.Dockerfile
         restart: always
         container_name: ATLAS_WebDataConnector
         ports:
