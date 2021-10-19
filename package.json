@@ -5,7 +5,8 @@
   "main": "WDC.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon WDC.js"
+    "wdc": "nodemon WDC.js",
+    "orch": "nodemon ATLAS_Orchestrator.js"
   },
   "repository": {
     "type": "git",

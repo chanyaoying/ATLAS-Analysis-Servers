@@ -17,17 +17,17 @@
 
 .form-content {
     padding: 1em;
-    padding: 5%;
+    padding: 2%;
     margin-bottom: 2%;
 }
 
 .form-control {
-    border-radius:1.5rem;
+    border-radius: 1.5rem;
 }
 
-.btn {
-    border:none;
-    border-radius:1.5rem;
+.butt {
+    border: none;
+    border-radius: 1.5rem;
     padding: 1%;
     width: 70%;
     cursor: pointer;
