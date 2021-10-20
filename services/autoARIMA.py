@@ -70,8 +70,6 @@ def home(tickers):
 
         output += json.loads(model_predictions)
 
-    print(output)
-
     return {
         "meta": {
             "table_name": f"Auto ARIMA table of {','.join(tickers)}",

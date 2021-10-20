@@ -63,7 +63,7 @@
                                 <input type="text" class="form-control" style="text-transform:uppercase" value=""
                                     v-model="inputAmount" id="floatingInput2" @keyup.enter="addTicker"
                                     @keyup.esc="delTicker" />
-                                <label for="floatingInput2">Amount or Weight (last price * positions), optional</label>
+                                <label for="floatingInput2">Amount or Weight (optional)</label>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
             <!-- Choose Analysis -->
             <div class="mycard">
                 <div class="mb-1">
-                    <h3>Analysis to be done</h3>
+                    <h3>Options</h3>
                 </div>
                 <div class="form-content">
                     <div class="row">
@@ -145,7 +145,7 @@
                     helpText: "Using pair-trading strategies, and support and resistances ... ",
                 },
                 {
-                    name: "Test",
+                    name: "Display Portfolio",
                     helpText: "Return the amounts and weights in table format on Tableau."
                 }
             ],

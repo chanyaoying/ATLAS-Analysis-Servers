@@ -24,7 +24,7 @@ function main() {
         ];
         const testSchema = {
             id: "portfolioTest",
-            alias: "Initial portfolio allocation (test)",
+            alias: "Portfolio Allocation (initial)",
             columns: test_cols
         };
 
@@ -65,7 +65,7 @@ function main() {
         const analyses = inputs.analyses;
 
         const schemaTranslationTable = {
-            "Test": "portfolioTest",
+            "Display Portfolio": "portfolioTest",
             "Price Prediction (Auto ARIMA)": "arimaPrediction"
         }
 

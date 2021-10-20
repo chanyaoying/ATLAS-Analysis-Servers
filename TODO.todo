@@ -1,2 +1,7 @@
-- multi table (https://tableau.github.io/webdataconnector/docs/wdc_multi_table_tutorial.html)
-- include auto arima service
+Auto arima:
+    - allow range to be set
+    - check for stationarity
+
+deploy:
+    - get it to work on tableau server
+    - deploy services on cloud or public machine
