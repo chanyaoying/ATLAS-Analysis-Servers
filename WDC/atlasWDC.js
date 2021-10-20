@@ -7,8 +7,7 @@ function main() {
         const tickers = inputs.tickers;
 
         // Test table
-        const test_cols = [
-            {
+        const test_cols = [{
                 id: "ticker",
                 dataType: tableau.dataTypeEnum.string
             },
@@ -24,14 +23,13 @@ function main() {
             }
         ];
         const testSchema = {
-            id: "testFeed",
+            id: "portfolioTest",
             alias: "Initial portfolio allocation (test)",
             columns: test_cols
         };
 
         // Auto ARIMA
-        const arima_cols = [
-            {
+        const arima_cols = [{
                 id: "ticker",
                 dataType: tableau.dataTypeEnum.string
             },
@@ -40,24 +38,24 @@ function main() {
                 dataType: tableau.dataTypeEnum.date
             },
             {
-                id: "price",
+                id: "predictionPrice",
                 alias: "Price",
                 dataType: tableau.dataTypeEnum.float
             },
-            {
-                id: "predicted",
-                alias: "Predicted?",
-                dataType: tableau.dataTypeEnum.integer
-            }
+            // {
+            //     id: "predicted",
+            //     alias: "Predicted?",
+            //     dataType: tableau.dataTypeEnum.integer
+            // }
         ]
         const arimaSchema = {
-            id: "arimaFeed",
+            id: "arimaPrediction",
             alias: `Auto ARIMA for ${tickers.join()}`,
             columns: arima_cols
         }
 
         // Add schemas
-        schemaCallback([testSchema]);
+        schemaCallback([testSchema, arimaSchema]);
     };
 
     myConnector.getData = function (table, doneCallback) {
@@ -65,14 +63,24 @@ function main() {
         const tickers = inputs.tickers;
         const amounts = inputs.amounts;
         const analyses = inputs.analyses;
-        const apiCall = `http://localhost:5000/${analyses}/${tickers}/${amounts}`;
 
-        $.getJSON(apiCall, function (resp) {
-            const tableData = resp['Test'].data; //TODO: use extra tables
-            console.log('tableData :>> ', tableData);
-            table.appendRows(tableData);
-            doneCallback();
-        });
+        const schemaTranslationTable = {
+            "Test": "portfolioTest",
+            "Price Prediction (Auto ARIMA)": "arimaPrediction"
+        }
+
+        const activeSchemas = analyses.map(x => schemaTranslationTable[x])
+
+        for (const activeSchema of activeSchemas) {
+            if (table.tableInfo.id === activeSchema) {
+                const apiCall = `http://localhost:5000/${activeSchema}/${tickers}/${amounts}`;
+                $.getJSON(apiCall, function (response) {
+                    const tableData = response.data;
+                    table.appendRows(tableData);
+                    doneCallback();
+                })
+            }
+        }
     };
 
     tableau.registerConnector(myConnector);
@@ -81,7 +89,6 @@ function main() {
 
         $("#ATLASsubmitButton").click(function () {
             const inputs = JSON.parse($("#allInputs").text())
-
             const connectionName = `${inputs.analyses.join()} of ${inputs.tickers.join()}`;
             tableau.connectionData = JSON.stringify(inputs);
             tableau.connectionName = connectionName;

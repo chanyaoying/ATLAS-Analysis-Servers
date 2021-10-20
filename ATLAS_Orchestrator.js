@@ -14,32 +14,37 @@ app.get("/testpoint", (req, res) => {
 })
 
 // Routes
-app.get("/:analyses/:tickers/:amounts", async (req, res) => {
+app.get("/portfolioTest/:tickers/:amounts", async (req, res) => {
     const params = req.params
 
-    const analyses = params.analyses.split(',') // array
     const tickers = params.tickers // str
     const amounts = params.amounts // str
 
-    const data = analyses.map(async analysisType => {
-        const serviceID = config.services[analysisType]
-        const apiCall = `http://${hostname}:${config.ports[serviceID]}/${tickers}/${amounts}`
-        console.log('apiCall :>> ', apiCall);
-        try {
-            const response = await axios.get(apiCall)
-            return {[analysisType]: response.data}
-        } catch (error) {
-            // console.error(error)
-        }
-    });
-    Promise.all(data).then(analysisOutputs => {
-        let output = {}
-        for (let analysisOutput of analysisOutputs) {
-            Object.assign(output, analysisOutput)
-        }
-        console.log('output :>> ', output);
-        res.send(output)
-    })
+    const apiCall = `http://${hostname}:${config.ports['portfolioTest']}/${tickers}/${amounts}`
+    try {
+        const response = await axios.get(apiCall)
+        res.send(response.data)
+    } catch (error) {
+        console.error(error)
+        res.status(400)
+    };
+})
+
+
+app.get("/arimaPrediction/:tickers/:amounts", async (req, res) => {
+    const params = req.params
+
+    const tickers = params.tickers // str
+    const amounts = params.amounts // str
+
+    const apiCall = `http://${hostname}:${config.ports['arimaPrediction']}/${tickers}`
+    try {
+        const response = await axios.get(apiCall)
+        res.send(response.data)
+    } catch (error) {
+        console.error(error)
+        res.status(400)
+    }
 })
 
 
