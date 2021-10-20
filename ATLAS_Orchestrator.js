@@ -20,7 +20,8 @@ app.get("/portfolioTest/:tickers/:amounts", async (req, res) => {
     const tickers = params.tickers // str
     const amounts = params.amounts // str
 
-    const apiCall = `http://${hostname}:${config.ports['portfolioTest']}/${tickers}/${amounts}`
+    const apiCall = `http://ATLAS_service_portfolioDisplay:${config.ports['portfolioTest']}/${tickers}/${amounts}`
+    // const apiCall = `http://${hostname}:${config.ports['portfolioTest']}/${tickers}/${amounts}`
     try {
         const response = await axios.get(apiCall)
         res.send(response.data)
@@ -37,7 +38,8 @@ app.get("/arimaPrediction/:tickers/:amounts", async (req, res) => {
     const tickers = params.tickers // str
     const amounts = params.amounts // str
 
-    const apiCall = `http://${hostname}:${config.ports['arimaPrediction']}/${tickers}`
+    const apiCall = `http://ATLAS_service_autoARIMA:${config.ports['arimaPrediction']}/${tickers}`
+    // const apiCall = `http://${hostname}:${config.ports['arimaPrediction']}/${tickers}`
     try {
         const response = await axios.get(apiCall)
         res.send(response.data)

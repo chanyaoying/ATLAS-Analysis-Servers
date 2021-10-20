@@ -23,3 +23,27 @@ services:
             - "8888:8888"
         depends_on:
             - ATLAS_Orchestrator
+
+    portfolioDisplay:
+        image: yaoyingsmu/atlas_service_portfoliodisplay:latest
+        build:
+            context: .
+            dockerfile: dockerfiles/portfolioDisplay.Dockerfile
+        restart: always
+        container_name: ATLAS_service_portfolioDisplay
+        ports:
+            - "5001:5001"
+        depends_on:
+            - ATLAS_Orchestrator
+
+    autoARIMA:
+        image: yaoyingsmu/atlas_service_autoarima:latest
+        build:
+            context: .
+            dockerfile: dockerfiles/autoARIMA.Dockerfile
+        restart: always
+        container_name: ATLAS_service_autoARIMA
+        ports:
+            - "5002:5002"
+        depends_on:
+            - ATLAS_Orchestrator

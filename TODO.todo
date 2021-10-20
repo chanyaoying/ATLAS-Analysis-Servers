@@ -5,3 +5,4 @@ Auto arima:
 deploy:
     - get it to work on tableau server
     - deploy services on cloud or public machine
+    - production mode?
