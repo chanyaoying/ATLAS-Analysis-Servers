@@ -23,6 +23,7 @@ def home(tickers, amounts):
     return {
             "meta": {
                 "table_name": f"Test table of {tickers}",
+                "columns": ["ticker", "weight", "amount"],
             },
             "data": [{"ticker": tickers_list[i], "weight": weights_list[i], "amount": amounts_list[i]} for i in range(len(tickers_list))],
         }, 200

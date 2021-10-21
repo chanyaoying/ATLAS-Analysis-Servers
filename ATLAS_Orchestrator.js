@@ -7,6 +7,22 @@ const port = 5000
 const config = require('./config')
 const hostname = config.hostname
 
+
+function reorderJSONKeys(object) {
+    const data = object.data
+    const cols = object.meta.columns
+    const newData = []
+    for (let row of data) {
+        const newRow = {}
+        for (let col of cols) {
+            newRow[col] = row[col]
+        }
+        newData.push(newRow)
+    }
+    return newData
+}
+
+
 app.use(cors())
 
 app.get("/testpoint", (req, res) => {
@@ -24,7 +40,7 @@ app.get("/portfolioTest/:tickers/:amounts", async (req, res) => {
     // const apiCall = `http://${hostname}:${config.ports['portfolioTest']}/${tickers}/${amounts}`
     try {
         const response = await axios.get(apiCall)
-        res.send(response.data)
+        res.send(reorderJSONKeys(response.data))
     } catch (error) {
         console.error(error)
         res.status(400)
@@ -42,7 +58,25 @@ app.get("/arimaPrediction/:tickers/:amounts", async (req, res) => {
     // const apiCall = `http://${hostname}:${config.ports['arimaPrediction']}/${tickers}`
     try {
         const response = await axios.get(apiCall)
-        res.send(response.data)
+        res.send(reorderJSONKeys(response.data))
+    } catch (error) {
+        console.error(error)
+        res.status(400)
+    }
+})
+
+
+app.get("/companyInfo/:tickers/:amounts", async (req, res) => {
+    const params = req.params
+
+    const tickers = params.tickers // str
+    const amounts = params.amounts // str
+
+    // const apiCall = `http://ATLAS_service_companyInfo:${config.ports['companyInfo']}/${tickers}`
+    const apiCall = `http://${hostname}:${config.ports['companyInfo']}/${tickers}`
+    try {
+        const response = await axios.get(apiCall)
+        res.send(reorderJSONKeys(response.data))
     } catch (error) {
         console.error(error)
         res.status(400)

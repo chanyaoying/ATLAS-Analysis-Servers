@@ -65,7 +65,6 @@ def home(tickers):
         model_predictions['ticker'] = ticker
         model_predictions['date'] = model_predictions.index
         model_predictions['date'] = model_predictions['date'].apply(lambda epoch_time: epoch_time.strftime('%Y-%m-%d'))
-        model_predictions = model_predictions[["ticker", "date", "predictionPrice"]]
         model_predictions = model_predictions.to_json(orient="records")
 
         output += json.loads(model_predictions)
@@ -73,6 +72,7 @@ def home(tickers):
     return {
         "meta": {
             "table_name": f"Auto ARIMA table of {','.join(tickers)}",
+            "columns": ["ticker", "date", "predictionPrice"]
         },
         "data": output,
     }, 200
