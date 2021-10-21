@@ -19,7 +19,7 @@ function reorderJSONKeys(object) {
         }
         newData.push(newRow)
     }
-    return newData
+    return {meta: object.meta, data: newData}
 }
 
 
@@ -72,10 +72,11 @@ app.get("/companyInfo/:tickers/:amounts", async (req, res) => {
     const tickers = params.tickers // str
     const amounts = params.amounts // str
 
-    // const apiCall = `http://ATLAS_service_companyInfo:${config.ports['companyInfo']}/${tickers}`
-    const apiCall = `http://${hostname}:${config.ports['companyInfo']}/${tickers}`
+    const apiCall = `http://ATLAS_service_companyInfo:${config.ports['companyInfo']}/${tickers}`
+    // const apiCall = `http://${hostname}:${config.ports['companyInfo']}/${tickers}`
     try {
         const response = await axios.get(apiCall)
+        console.log('reorderJSONKeys(response.data) :>> ', reorderJSONKeys(response.data));
         res.send(reorderJSONKeys(response.data))
     } catch (error) {
         console.error(error)

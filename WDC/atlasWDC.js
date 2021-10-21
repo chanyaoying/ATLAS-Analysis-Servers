@@ -54,8 +54,28 @@ function main() {
             columns: arima_cols
         }
 
+        // Company Info
+        const companyInfo_cols = [{
+                id: "ticker",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "field",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "value",
+                dataType: tableau.dataTypeEnum.string
+            },
+        ]
+        const companyInfoSchema = {
+            id: "companyInfo",
+            alias: `Company info of ${tickers.join()}`,
+            columns: companyInfo_cols
+        }
+
         // Add schemas
-        schemaCallback([testSchema, arimaSchema]);
+        schemaCallback([testSchema, arimaSchema, companyInfoSchema]);
     };
 
     myConnector.getData = function (table, doneCallback) {
@@ -66,7 +86,8 @@ function main() {
 
         const schemaTranslationTable = {
             "Display Portfolio": "portfolioTest",
-            "Price Prediction (Auto ARIMA)": "arimaPrediction"
+            "Price Prediction (Auto ARIMA)": "arimaPrediction",
+            "Company Information": "companyInfo",
         }
 
         const activeSchemas = analyses.map(x => schemaTranslationTable[x])

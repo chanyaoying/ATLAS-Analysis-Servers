@@ -47,3 +47,15 @@ services:
             - "5002:5002"
         depends_on:
             - ATLAS_Orchestrator
+
+    companyInfo:
+        image: yaoyingsmu/atlas_service_companyinfo:latest
+        build:
+            context: .
+            dockerfile: dockerfiles/companyInfo.Dockerfile
+        restart: always
+        container_name: ATLAS_service_companyInfo
+        ports:
+            - "5003:5003"
+        depends_on:
+            - ATLAS_Orchestrator
