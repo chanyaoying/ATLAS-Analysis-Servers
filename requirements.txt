@@ -22,4 +22,6 @@ six==1.16.0
 threadpoolctl==3.0.0
 urllib3==1.26.7
 Werkzeug==2.0.2
+yahoo-fin==0.8.9.1
 yfinance==0.1.64
+zipp==3.6.0

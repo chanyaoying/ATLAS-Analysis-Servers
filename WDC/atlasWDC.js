@@ -60,11 +60,23 @@ function main() {
                 dataType: tableau.dataTypeEnum.string
             },
             {
-                id: "field",
+                id: "company_name",
                 dataType: tableau.dataTypeEnum.string
             },
             {
-                id: "value",
+                id: "industry",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "sector",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "website",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "summary",
                 dataType: tableau.dataTypeEnum.string
             },
         ]

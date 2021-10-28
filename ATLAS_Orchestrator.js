@@ -76,7 +76,24 @@ app.get("/companyInfo/:tickers/:amounts", async (req, res) => {
     // const apiCall = `http://${hostname}:${config.ports['companyInfo']}/${tickers}`
     try {
         const response = await axios.get(apiCall)
-        console.log('reorderJSONKeys(response.data) :>> ', reorderJSONKeys(response.data));
+        res.send(reorderJSONKeys(response.data))
+    } catch (error) {
+        console.error(error)
+        res.status(400)
+    }
+})
+
+
+app.get("/financialStatements/:tickers/:amounts", async (req, res) => {
+    const params = req.params
+
+    const tickers = params.tickers // str
+    const amounts = params.amounts // str
+
+    // const apiCall = `http://ATLAS_service_financialStatements:${config.ports['financialStatements']}/${tickers}`
+    const apiCall = `http://${hostname}:${config.ports['financialStatements']}/${tickers}`
+    try {
+        const response = await axios.get(apiCall)
         res.send(reorderJSONKeys(response.data))
     } catch (error) {
         console.error(error)
