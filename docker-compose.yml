@@ -59,3 +59,27 @@ services:
             - "5003:5003"
         depends_on:
             - ATLAS_Orchestrator
+
+    financialStatements:
+        image: yaoyingsmu/atlas_service_financialstatements:latest
+        build:
+            context: .
+            dockerfile: dockerfiles/financialStatements.Dockerfile
+        restart: always
+        container_name: ATLAS_service_financialStatements
+        ports:
+            - "5004:5004"
+        depends_on:
+            - ATLAS_Orchestrator
+
+    markowitzPortfolioTheory:
+        image: yaoyingsmu/atlas_service_markowitzportfoliotheory:latest
+        build:
+            context: .
+            dockerfile: dockerfiles/markowitzPortfolioTheory.Dockerfile
+        restart: always
+        container_name: ATLAS_service_markowitzPortfolioTheory
+        ports:
+            - "5005:5005"
+        depends_on:
+            - ATLAS_Orchestrator

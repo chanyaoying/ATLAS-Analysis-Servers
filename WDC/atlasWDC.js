@@ -64,10 +64,6 @@ function main() {
                 dataType: tableau.dataTypeEnum.string
             },
             {
-                id: "industry",
-                dataType: tableau.dataTypeEnum.string
-            },
-            {
                 id: "sector",
                 dataType: tableau.dataTypeEnum.string
             },

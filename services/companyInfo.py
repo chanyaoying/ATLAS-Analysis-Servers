@@ -41,19 +41,18 @@ def home(tickers):
     tickers = tickers.split(',')
 
     output = []
-    column_names = ['ticker', 'company_name','industry','sector','website','summary']
+    column_names = ['ticker', 'company_name','sector','website','summary']
     xstr = lambda s: s or ""
 
     for ticker in tickers:
         share_info = yf.Ticker(ticker).info
         company_name = xstr(share_info['shortName'])
-        industry = xstr(share_info['industry'])
         sector = xstr(share_info['sector'])
         symbol = xstr(share_info['symbol'])
         website = xstr(share_info['website'])
         summary = xstr(share_info['longBusinessSummary'])
 
-        new_row = {'ticker': symbol, 'company_name': company_name, 'industry': industry, 'sector': sector, 'website': website,'summary':summary}
+        new_row = {'ticker': symbol, 'company_name': company_name, 'sector': sector, 'website': website,'summary':summary}
         output.append(new_row)
 
         # filter = ['sector', 'country', 'industry', 'totalAssets', 'bookValue',

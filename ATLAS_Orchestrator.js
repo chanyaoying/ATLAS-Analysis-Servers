@@ -90,8 +90,8 @@ app.get("/financialStatements/:tickers/:amounts", async (req, res) => {
     const tickers = params.tickers // str
     const amounts = params.amounts // str
 
-    // const apiCall = `http://ATLAS_service_financialStatements:${config.ports['financialStatements']}/${tickers}`
-    const apiCall = `http://${hostname}:${config.ports['financialStatements']}/${tickers}`
+    const apiCall = `http://ATLAS_service_financialStatements:${config.ports['financialStatements']}/${tickers}`
+    // const apiCall = `http://${hostname}:${config.ports['financialStatements']}/${tickers}`
     try {
         const response = await axios.get(apiCall)
         res.send(reorderJSONKeys(response.data))
@@ -108,8 +108,8 @@ app.get("/markowitzPortfolioTheory/:tickers/:amounts", async (req, res) => {
     const tickers = params.tickers // str
     const amounts = params.amounts // str
 
-    // const apiCall = `http://ATLAS_service_financialStatements:${config.ports['financialStatements']}/${tickers}`
-    const apiCall = `http://${hostname}:${config.ports['markowitzPortfolioTheory']}/${tickers}`
+    const apiCall = `http://ATLAS_service_markowitzPortfolioTheory:${config.ports['markowitzPortfolioTheory']}/${tickers}`
+    // const apiCall = `http://${hostname}:${config.ports['markowitzPortfolioTheory']}/${tickers}`
     try {
         const response = await axios.get(apiCall)
         res.send(reorderJSONKeys(response.data))
