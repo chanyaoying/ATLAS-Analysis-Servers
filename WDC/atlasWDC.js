@@ -86,8 +86,64 @@ function main() {
             columns: companyInfo_cols
         }
 
+        // Financial Statements
+        const financialStatements_cols = [{
+                id: "ticker",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "type",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "period",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "breakdown",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "value",
+                dataType: tableau.dataTypeEnum.float
+            },
+        ]
+        const financialStatementsSchema = {
+            id: "financialStatements",
+            alias: `Financial Statements of ${tickers.join()}`,
+            columns: financialStatements_cols
+        }
+
+        // Markowitz Portfolio Theory
+        const markowitzPortfolioTheory_cols = [{
+                id: "ticker",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "weight",
+                dataType: tableau.dataTypeEnum.float
+            },
+            {
+                id: "annualised_return",
+                dataType: tableau.dataTypeEnum.float
+            },
+            {
+                id: "annualised_volatility",
+                dataType: tableau.dataTypeEnum.float
+            },
+            {
+                id: "type",
+                dataType: tableau.dataTypeEnum.string
+            }
+        ]
+        const markowitzPortfolioTheorySchema = {
+            id: "markowitzPortfolioTheory",
+            alias: `Portfolio Allocation Table of ${tickers.join()}`,
+            columns: markowitzPortfolioTheory_cols,
+        }
+
         // Add schemas
-        schemaCallback([testSchema, arimaSchema, companyInfoSchema]);
+        schemaCallback([testSchema, arimaSchema, companyInfoSchema, financialStatementsSchema, markowitzPortfolioTheorySchema]);
     };
 
     myConnector.getData = function (table, doneCallback) {
@@ -100,6 +156,8 @@ function main() {
             "Display Portfolio": "portfolioTest",
             "Price Prediction (Auto ARIMA)": "arimaPrediction",
             "Company Information": "companyInfo",
+            "Financial Statements": "financialStatements",
+            "Find Optimal Portfolio Allocation": "markowitzPortfolioTheory",
         }
 
         const activeSchemas = analyses.map(x => schemaTranslationTable[x])
