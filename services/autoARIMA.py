@@ -28,6 +28,11 @@ def test_point():
     return "Connection established.", 200
 
 
+@app.route("/favicon.ico")
+def favicon_fix():
+    return "Okay", 200
+
+
 @app.route("/<string:tickers>", methods=['GET'])
 def home(tickers):
 
