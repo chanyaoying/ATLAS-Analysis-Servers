@@ -83,3 +83,10 @@ services:
             - "5005:5005"
         depends_on:
             - ATLAS_Orchestrator
+
+    redis:
+        image: redis:alpine
+        restart: always
+        container_name: ATLAS_price_cache
+        ports:
+            - "6379:6379"

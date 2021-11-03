@@ -11,4 +11,5 @@ RUN export FLASK_APP=markowitzPortfolioTheory
 # Run
 EXPOSE 5005
 COPY ../services/markowitzPortfolioTheory.py ./
+COPY ../services/utility.py ./
 CMD [ "python", "markowitzPortfolioTheory.py"]

@@ -41,7 +41,7 @@ def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
 
     Returns a pandas dataframe of the close prices for the past 2 years from this month.
     """
-    cache = redis.Redis()
+    cache = redis.Redis(host="ATLAS_price_cache", port=6379)
     start_date, end_date, year_month = get_start_end_date()
     print(start_date, end_date)
     key = f"{ticker}_{year_month}"
