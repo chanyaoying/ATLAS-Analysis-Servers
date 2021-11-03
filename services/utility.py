@@ -51,7 +51,7 @@ def get_close_price(ticker: str) -> pd.core.frame.DataFrame:
         df = data.DataReader([ticker], 'yahoo', start_date, end_date)['Close']
         price_dict = df_to_dict(df, key)
         with cache.pipeline() as pipe:
-            for ticker, price_data in price_dict.items():
+            for key, price_data in price_dict.items():
                 pipe.hmset(key, price_data)
                 print("inserted!")
             pipe.execute()
