@@ -33,7 +33,7 @@ def get_start_end_date() -> Tuple[str]:
     return start_date, end_date, f"{current_year}-{current_month}"
 
 
-def get_close_price(ticker: str) -> pd.core.frame.DataFrame:
+def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
     """
     Checks redis if the data for the past 2 years exist.
     Get the data if found.
@@ -43,12 +43,13 @@ def get_close_price(ticker: str) -> pd.core.frame.DataFrame:
     """
     cache = redis.Redis()
     start_date, end_date, year_month = get_start_end_date()
+    print(start_date, end_date)
     key = f"{ticker}_{year_month}"
     query = cache.hgetall(key)
 
     if not query:  # if price data not found in redis
         print("pandas data reader used")
-        df = data.DataReader([ticker], 'yahoo', start_date, end_date)['Close']
+        df = data.DataReader([ticker], 'yahoo', start_date, end_date)[price_type]
         price_dict = df_to_dict(df, key)
         with cache.pipeline() as pipe:
             for key, price_data in price_dict.items():

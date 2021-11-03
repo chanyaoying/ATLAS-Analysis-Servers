@@ -7,7 +7,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 # price cache
-from utility import get_close_price
+from utility import get_price
 
 # Statistics
 from pmdarima import auto_arima
@@ -49,7 +49,7 @@ def home(tickers):
         # valid = df.iloc[int(df.shape[0]*0.80):]
 
         # train size = 100%
-        model_train = get_close_price(ticker)
+        model_train = get_price(ticker, 'Close')
 
         two_years = model_train.copy()
         two_years.columns = ['predictionPrice']
