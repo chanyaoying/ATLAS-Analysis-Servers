@@ -38,10 +38,6 @@ def home(tickers):
     # Parameters
     tickers = tickers.split(',')
     days_to_predict = 60
-    end_date = (datetime.now() - relativedelta(days=1)).strftime("%Y-%m-%d") # 1 day before to account for timezone differences
-    start_date = (datetime.now() - relativedelta(years=2)).strftime("%Y-%m-%d") # 2 years ago
-    
-
     output = []
 
     for ticker in tickers:
@@ -67,8 +63,8 @@ def home(tickers):
 
         # train model
         model_arima = auto_arima(model_train, trace=False, error_action='ignore',
-                                    start_p=1, start_q=1, max_p=3, max_q=3,
-                                    suppress_warnings=True, stepwise=False, seasonal=False)
+                                 start_p=1, start_q=1, max_p=3, max_q=3,
+                                 suppress_warnings=True, stepwise=False, seasonal=False)
 
         model_arima.fit(model_train, disp=-1)
 
@@ -77,7 +73,8 @@ def home(tickers):
         model_predictions.columns = ['predictionPrice']
         model_predictions['ticker'] = ticker
         model_predictions['date'] = model_predictions.index
-        model_predictions['date'] = model_predictions['date'].apply(lambda epoch_time: epoch_time.strftime('%Y-%m-%d'))
+        model_predictions['date'] = model_predictions['date'].apply(
+            lambda epoch_time: epoch_time.strftime('%Y-%m-%d'))
         model_predictions = model_predictions.to_json(orient="records")
 
         output += json.loads(model_predictions)
