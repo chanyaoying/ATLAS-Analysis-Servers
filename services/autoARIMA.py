@@ -2,6 +2,8 @@ import pandas as pd
 from datetime import datetime, timedelta
 from math import *
 import json
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 # Statistics
 from statsmodels.tsa.api import Holt, SimpleExpSmoothing, ExponentialSmoothing
@@ -38,9 +40,10 @@ def home(tickers):
 
     # Parameters
     tickers = tickers.split(',')
-    days_to_predict = 30
-    start_date = '2019-01-01'
-    end_date = '2020-12-31'
+    days_to_predict = 60
+    end_date = (datetime.now() - relativedelta(days=1)).strftime("%Y-%m-%d") # 1 day before to account for timezone differences
+    start_date = (datetime.now() - relativedelta(years=2)).strftime("%Y-%m-%d") # 2 years ago
+    
 
     output = []
 
@@ -57,10 +60,19 @@ def home(tickers):
         # train size = 100%
         model_train = df
 
+        two_years = model_train['Close']
+        two_years.columns = ['predictionPrice']
+        two_years['ticker'] = ticker
+        two_years['date'] = two_years.index
+        two_years['date'] = two_years['date'].apply(lambda epoch_time: epoch_time.strftime('%Y-%m-%d'))
+        two_years = two_years.to_json(orient="records")
+
+        output += json.loads(two_years)
+
         # train model
         model_arima = auto_arima(model_train["Close"], trace=False, error_action='ignore',
-                                 start_p=1, start_q=1, max_p=3, max_q=3,
-                                 suppress_warnings=True, stepwise=False, seasonal=False)
+                                    start_p=1, start_q=1, max_p=3, max_q=3,
+                                    suppress_warnings=True, stepwise=False, seasonal=False)
 
         model_arima.fit(model_train["Close"], disp=-1)
 
