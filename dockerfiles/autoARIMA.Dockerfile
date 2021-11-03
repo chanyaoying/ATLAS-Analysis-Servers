@@ -12,4 +12,4 @@ RUN export FLASK_APP=autoARIMA
 EXPOSE 5002
 COPY ../services/autoARIMA.py ./
 COPY ../services/utility.py ./
-CMD [ "python", "autoARIMA.py"]
+CMD [ "gunicorn", "-b", "0.0.0.0:5002", "autoARIMA:app", "-w", "4"]

@@ -11,4 +11,5 @@ RUN export FLASK_APP=portfolioDisplay
 # Run
 EXPOSE 5001
 COPY ../services/portfolioDisplay.py ./
-CMD [ "python", "portfolioDisplay.py"]
+# CMD [ "python", "portfolioDisplay.py"]
+CMD [ "gunicorn", "-b", "0.0.0.0:5001", "portfolioDisplay:app", "-w", "4"]

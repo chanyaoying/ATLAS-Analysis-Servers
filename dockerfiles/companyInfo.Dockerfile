@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN export FLASK_APP=companyInfo
 
 # Run
-EXPOSE 5001
+EXPOSE 5003
 COPY ../services/companyInfo.py ./
-CMD [ "python", "companyInfo.py"]
+# CMD [ "python", "companyInfo.py"]
+CMD [ "gunicorn", "-b", "0.0.0.0:5003", "companyInfo:app", "-w", "4"]

@@ -20,7 +20,7 @@ services:
         restart: always
         container_name: ATLAS_WebDataConnector
         ports:
-            - "8888:8888"
+            - "80:8888"
         depends_on:
             - ATLAS_Orchestrator
 

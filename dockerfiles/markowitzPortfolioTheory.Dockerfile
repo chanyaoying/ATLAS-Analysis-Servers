@@ -12,4 +12,5 @@ RUN export FLASK_APP=markowitzPortfolioTheory
 EXPOSE 5005
 COPY ../services/markowitzPortfolioTheory.py ./
 COPY ../services/utility.py ./
-CMD [ "python", "markowitzPortfolioTheory.py"]
+# CMD [ "python", "markowitzPortfolioTheory.py"]
+CMD [ "gunicorn", "-b", "0.0.0.0:5005", "markowitzPortfolioTheory:app", "-w", "4"]
