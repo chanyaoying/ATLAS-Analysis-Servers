@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-import scipy.optimize as sco
 
+from utility import get_price
+
+import scipy.optimize as sco
 from pandas_datareader import data
-# import matplotlib.pyplot as plt
 
 # import json
 from flask import Flask
@@ -88,8 +87,7 @@ def efficient_frontier(mean_returns, cov_matrix, returns_range):
     return efficients
 
 
-def display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate, table, returns
-                             ):
+def display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate, table, returns):
     max_sharpe = max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate)
     sdp, rp = portfolio_annualised_performance(
         max_sharpe['x'], mean_returns, cov_matrix)
@@ -108,6 +106,7 @@ def display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate, table, re
         round(i*100, 2)for i in min_vol_allocation.allocation]
     min_vol_allocation = min_vol_allocation.T
 
+    # annual vol/rt
     an_vol = np.std(returns) * np.sqrt(252)
     an_rt = mean_returns * 252
 
@@ -139,81 +138,18 @@ def display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate, table, re
 
     return output
 
-    # print("-"*80)
-    # print("Maximum Sharpe Ratio Portfolio Allocation\n")
-    # print("Annualised Return:", round(rp, 2))
-    # print("Annualised Volatility:", round(sdp, 2))
-    # print("\n")
-    # print(max_sharpe_allocation)
-    # print("-"*80)
-    # print("Minimum Volatility Portfolio Allocation\n")
-    # print("Annualised Return:", round(rp_min, 2))
-    # print("Annualised Volatility:", round(sdp_min, 2))
-    # print("\n")
-    # print(min_vol_allocation)
-
-    # print("Individual Stock Returns and Volatility\n")
-    # for i, txt in enumerate(table.columns):
-    #     print(txt, ":", "annuaised return", round(
-    #         an_rt[i], 2), ", annualised volatility:", round(an_vol[i], 2))
-
-    # fig, ax = plt.subplots(figsize=(10, 7))
-    # ax.scatter(an_vol,an_rt,marker='o',s=200)
-
-    # for i, txt in enumerate(table.columns):
-    #     ax.annotate(txt, (an_vol[i],an_rt[i]), xytext=(10,0), textcoords='offset points')
-    # ax.scatter(sdp,rp,marker='*',color='r',s=500, label='Maximum Sharpe ratio')
-    # ax.scatter(sdp_min,rp_min,marker='*',color='g',s=500, label='Minimum volatility')
-
-    # target = np.linspace(rp_min, 0.34, 50)
-    # efficient_portfolios = efficient_frontier(mean_returns, cov_matrix, target)
-    # ax.plot([p['fun'] for p in efficient_portfolios], target, linestyle='-.', color='black', label='efficient frontier')
-    # ax.set_title('Portfolio Optimization with Individual Stocks')
-    # ax.set_xlabel('annualised volatility')
-    # ax.set_ylabel('annualised returns')
-    # ax.legend(labelspacing=0.8)
-
-
-# tickers = ['BABA', 'KWEB', 'SPOT', 'OIL', 'VOO', 'FB']
 
 @app.route("/<string:tickers>", methods=['GET'])
 def home(tickers):
 
+    table = pd.DataFrame()
     tickers = tickers.split(',')
-    #!! to standardise time series with a price getter service (then cache?)
-    start_date = '2019-9-1'
-    end_date = '2021-8-31'
-    panel_data = pd.DataFrame()
 
-    for t in tickers:
-        t_data = data.DataReader(t, 'yahoo', start_date, end_date)
-        t_data = t_data.loc[start_date: end_date]
-        t_data = t_data[['Adj Close']]
-        t_data = t_data.reset_index()
-        t_data["ticker"] = t
-        t_data = t_data.rename(
-            columns={"Date": "date", t_data.columns[1]: "adj_close"})
-        panel_data = panel_data.append(t_data)
-
-    df = panel_data.set_index('date')
-    table = df.pivot(columns='ticker')
-    # By specifying col[1] in below list comprehension
-    # You can select the stock names under multi-level column
-    table.columns = [col[1] for col in table.columns]
-
-    # plt.figure(figsize=(14, 7))
-    # for c in table.columns.values:
-    #     plt.plot(table.index, table[c], lw=3, alpha=0.8,label=c)
-    # plt.legend(loc='upper left', fontsize=12)
-    # plt.ylabel('price in $')
-
-    returns = table.pct_change()
-
-    # plt.figure(figsize=(14, 7))
-    # for c in returns.columns.values:
-    #     plt.plot(returns.index, returns[c], lw=3, alpha=0.8,label=c)
-    # plt.legend(loc='upper right', fontsize=12)
-    # plt.ylabel('daily returns')
+    for ticker in tickers:
+        col = get_price(ticker, 'Adj Close')
+        col.columns = [ticker]
+        table.index = col.index
+        table = table.join(col)
 
     returns = table.pct_change()
     mean_returns = returns.mean()
@@ -232,4 +168,4 @@ def home(tickers):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)

@@ -1,28 +1,11 @@
-import json
 from flask import Flask
 from flask_cors import CORS
 import yfinance as yf  # 2000 requests per hour per IP
-from typing import Dict, List, Any
-import pandas as pd
 
 port = 5003
 
 app = Flask(__name__)
 CORS(app)
-
-
-# def dict_to_df(dictionary: Dict[str, Any], columns: List[str] = ["Key", "Value"]) -> pd.core.frame.DataFrame:
-#     """
-#     Converts a vertical python dictionary into a 2D pandas Dataframe, with 2 columns.
-#     Each key corresponds to a row in the dataframe.
-
-#     Usage:
-#     df = dict_to_df(price_dict)
-#     """
-#     data = {columns[0]: list(dictionary.keys()),
-#             columns[1]: list(dictionary.values())}
-#     df = pd.DataFrame.from_dict(data)
-#     return df
 
 
 @app.route("/testpoint")

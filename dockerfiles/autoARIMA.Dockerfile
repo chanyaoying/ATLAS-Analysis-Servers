@@ -11,4 +11,5 @@ RUN export FLASK_APP=autoARIMA
 # Run
 EXPOSE 5002
 COPY ../services/autoARIMA.py ./
+COPY ../services/utility.py ./
 CMD [ "python", "autoARIMA.py"]
