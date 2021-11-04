@@ -4,12 +4,12 @@ FROM python:3.9-slim-buster
 WORKDIR /usr/src/app/
 
 # Install app dependencies
-COPY ../requirements.txt ./
+COPY ./requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 RUN export FLASK_APP=financialStatements
 
 # Run
 EXPOSE 5004
-COPY ../services/financialStatements.py ./
+COPY ./services/financialStatements.py ./
 # CMD [ "python", "financialStatements.py"]
 CMD [ "gunicorn", "-b", "0.0.0.0:5004", "financialStatements:app", "-w", "4"]

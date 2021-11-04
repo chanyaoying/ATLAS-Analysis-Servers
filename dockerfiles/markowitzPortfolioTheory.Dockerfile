@@ -4,13 +4,13 @@ FROM python:3.9-slim-buster
 WORKDIR /usr/src/app/
 
 # Install app dependencies
-COPY ../requirements.txt ./
+COPY ./requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 RUN export FLASK_APP=markowitzPortfolioTheory
 
 # Run
 EXPOSE 5005
-COPY ../services/markowitzPortfolioTheory.py ./
-COPY ../services/utility.py ./
+COPY ./services/markowitzPortfolioTheory.py ./
+COPY ./services/utility.py ./
 # CMD [ "python", "markowitzPortfolioTheory.py"]
 CMD [ "gunicorn", "-b", "0.0.0.0:5005", "markowitzPortfolioTheory:app", "-w", "4"]
