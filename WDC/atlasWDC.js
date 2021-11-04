@@ -160,7 +160,7 @@ function main() {
 
         for (const activeSchema of activeSchemas) {
             if (table.tableInfo.id === activeSchema) {
-                const apiCall = `http://ATLAS_Orchestrator:5000/${activeSchema}/${tickers}/${amounts}`;
+                const apiCall = `http://localhost:5000/${activeSchema}/${tickers}/${amounts}`;
                 $.getJSON(apiCall, function (response) {
                     const tableData = response.data;
                     table.appendRows(tableData);
