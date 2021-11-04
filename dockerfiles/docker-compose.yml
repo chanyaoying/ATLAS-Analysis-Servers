@@ -6,7 +6,7 @@ services:
         image: yaoyingsmu/atlas_orchestrator:latest
         build: 
             context: .
-            dockerfile: ATLAS_Orchestrator.Dockerfile
+            dockerfile: dockerfiles/ATLAS_Orchestrator.Dockerfile
         restart: always
         container_name: ATLAS_Orchestrator
         ports:
@@ -16,7 +16,7 @@ services:
         image: yaoyingsmu/atlas_webdataconnector:latest
         build: 
             context: .
-            dockerfile: WDC.Dockerfile
+            dockerfile: dockerfiles/WDC.Dockerfile
         restart: always
         container_name: ATLAS_WebDataConnector
         ports:
@@ -28,7 +28,7 @@ services:
         image: yaoyingsmu/atlas_service_portfoliodisplay:latest
         build:
             context: .
-            dockerfile: portfolioDisplay.Dockerfile
+            dockerfile: dockerfiles/portfolioDisplay.Dockerfile
         restart: always
         container_name: ATLAS_service_portfolioDisplay
         ports:
@@ -40,7 +40,7 @@ services:
         image: yaoyingsmu/atlas_service_autoarima:latest
         build:
             context: .
-            dockerfile: autoARIMA.Dockerfile
+            dockerfile: dockerfiles/autoARIMA.Dockerfile
         restart: always
         container_name: ATLAS_service_autoARIMA
         ports:
@@ -52,7 +52,7 @@ services:
         image: yaoyingsmu/atlas_service_companyinfo:latest
         build:
             context: .
-            dockerfile: companyInfo.Dockerfile
+            dockerfile: dockerfiles/companyInfo.Dockerfile
         restart: always
         container_name: ATLAS_service_companyInfo
         ports:
@@ -64,7 +64,7 @@ services:
         image: yaoyingsmu/atlas_service_financialstatements:latest
         build:
             context: .
-            dockerfile: financialStatements.Dockerfile
+            dockerfile: dockerfiles/financialStatements.Dockerfile
         restart: always
         container_name: ATLAS_service_financialStatements
         ports:
@@ -76,7 +76,7 @@ services:
         image: yaoyingsmu/atlas_service_markowitzportfoliotheory:latest
         build:
             context: .
-            dockerfile: markowitzPortfolioTheory.Dockerfile
+            dockerfile: dockerfiles/markowitzPortfolioTheory.Dockerfile
         restart: always
         container_name: ATLAS_service_markowitzPortfolioTheory
         ports:
