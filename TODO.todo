@@ -1,3 +1,8 @@
+Auto arima:
+    - allow range to be set
+    - check for stationarity
+
 deploy:
-    - deploy services on cloud
-    - ci/cd after the project
+    - get it to work on tableau server
+    - deploy services on cloud or public machine
+    - production mode?
