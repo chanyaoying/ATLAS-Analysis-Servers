@@ -160,7 +160,7 @@
         methods: {
             addTicker: function () {
                 this.tickers.push(this.inputTicker.toUpperCase())
-                this.inputAmount = parseFloat(this.inputAmount) || 1.0
+                this.inputAmount = parseFloat(this.inputAmount) || 0.0
                 this.tickerAmounts.push(this.inputAmount)
 
                 this.tickerWeights = this.tickerAmounts.map(amount => (amount * 100 / this.tickerAmounts
