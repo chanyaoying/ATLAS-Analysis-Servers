@@ -27,30 +27,29 @@ def home(tickers):
     column_names = ['ticker', 'company_name','sector','website','summary']
     xstr = lambda s: s or ""
 
+    return_tickers = []
+
     for ticker in tickers:
-        share_info = yf.Ticker(ticker).info
-        company_name = xstr(share_info['shortName'])
-        sector = xstr(share_info['sector'])
-        symbol = xstr(share_info['symbol'])
-        website = xstr(share_info['website'])
-        summary = xstr(share_info['longBusinessSummary'])
 
-        new_row = {'ticker': symbol, 'company_name': company_name, 'sector': sector, 'website': website,'summary':summary}
-        output.append(new_row)
+        try:
 
-        # filter = ['sector', 'country', 'industry', 'totalAssets', 'bookValue',
-        #           'profitMargins', 'lastSplitDate', 'lastSplitFactor', 'lastDividendDate', 'lastCapGain']
-        # info_dict = {k: v for k, v in share_info.info.items() if k in filter} 
+            share_info = yf.Ticker(ticker).info
+            company_name = xstr(share_info['shortName'])
+            sector = xstr(share_info['sector'])
+            symbol = xstr(share_info['symbol'])
+            website = xstr(share_info['website'])
+            summary = xstr(share_info['longBusinessSummary'])
 
-        # df = dict_to_df(info_dict, ["field", "value"])
-        # df['value'] = df['value'].apply(str)
-        # df['ticker'] = ticker
-        # df = df.to_json(orient='records')
-        # output += json.loads(df)
+            new_row = {'ticker': symbol, 'company_name': company_name, 'sector': sector, 'website': website,'summary':summary}
+            output.append(new_row)
+            return_tickers.append(ticker)
+
+        except:
+            pass
 
     return {
         "meta": {
-            "table_name": f"Company info of {','.join(tickers)}",
+            "table_name": f"Company info of {','.join(return_tickers)}",
             "columns": column_names
         },
         "data": output,
