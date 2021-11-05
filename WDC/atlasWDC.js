@@ -160,8 +160,7 @@ function main() {
 
         for (const activeSchema of activeSchemas) {
             if (table.tableInfo.id === activeSchema) {
-                const apiCall = `http://${window.location.href}:5000/${activeSchema}/${tickers}/${amounts}`;
-                console.log('apiCall :>> ', apiCall);
+                const apiCall = `http://rich.limpei.club:5000/${activeSchema}/${tickers}/${amounts}`;
                 $.getJSON(apiCall, function (response) {
                     const tableData = response.data;
                     table.appendRows(tableData);
@@ -176,7 +175,6 @@ function main() {
     $(document).ready(function () {
 
         $("#ATLASsubmitButton").click(function () {
-            console.log('host :>> ', window.location.host);
             const inputs = JSON.parse($("#allInputs").text())
             const connectionName = `${inputs.analyses.join()} of ${inputs.tickers.join()}`;
             tableau.connectionData = JSON.stringify(inputs);
