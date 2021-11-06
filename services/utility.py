@@ -28,7 +28,7 @@ def get_start_end_date() -> Tuple[str]:
     3. current year-month
     """
     current_month, current_year = datetime.now().strftime("%m,%Y").split(',')
-    start_date = f"{int(current_year)-2}-{current_month}-01"
+    start_date = f"{int(current_year)-5}-{current_month}-01"
     end_date = f"{current_year}-{current_month}-01"
     return start_date, end_date, f"{current_year}-{current_month}"
 
