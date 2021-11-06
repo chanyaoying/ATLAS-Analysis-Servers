@@ -29,13 +29,23 @@ def portfolio_annualised_performance(weights, mean_returns, cov_matrix):
     std = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
     return std, returns
 
-def portfolio_annualised_performance_with_downside_deviation(weights, mean_returns, cov_matrix, original_returns, risk_free_rate):
-    returns = np.sum(mean_returns*weights) * 252
-    # risk free rate is the minimum acceptable returns
-    # negative_returns = [returns - risk_free_rate for returns in list(original_returns) if returns < 0]
-    variances = [np.var(list(filter(lambda n: n < 0 ,list(original_returns[ticker] - risk_free_rate))))  for ticker in original_returns]
-    downside_deviation = np.sqrt(np.dot(variances, weights)) * np.sqrt(252)
-    return downside_deviation, returns
+def downside_risk(weights, original_returns):
+    daily_combined = (original_returns * weights).sum(axis=1)
+    downside_deviation = np.clip(daily_combined, np.NINF, 0).std()
+    return downside_deviation
+
+def annualised_returns(weights, returns):
+    return_series = (returns + 1).cumprod() - 1
+    final_weighted_returns = np.sum(return_series.tail(1).mean() * weights)
+    annualised_ret = (final_weighted_returns + 1)**(1/2) - 1 # 2 represents 2 years
+    return annualised_ret
+
+
+def annualised_volatility(series: pd.core.series.Series) -> float:
+    return np.sqrt(np.log(series / series.shift(1)).var()) * np.sqrt(252)
+
+def combined_annualised_volatility(weights, table):
+    return np.sqrt(np.sum(np.square(table.apply(annualised_volatility)) * weights ))
 
 ########################################################################################################
 # Efficient Frontier
@@ -58,14 +68,16 @@ def max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate):
 
 ########################################################################################################
 
-def neg_sortino_ratio(weights, mean_returns, cov_matrix, risk_free_rate, original_returns):
-    p_var, p_ret = portfolio_annualised_performance_with_downside_deviation(weights, mean_returns, cov_matrix, original_returns, risk_free_rate)
-    return -(p_ret - risk_free_rate) / p_var
+def neg_sortino_ratio(weights, mean_returns, original_returns, risk_free_rate):
+    returns = np.sum(mean_returns*weights)
+    downside_deviation = downside_risk(weights, original_returns)
+    neg_sortino = -(returns - risk_free_rate/252) * np.sqrt(252) / downside_deviation
+    return neg_sortino
 
 
-def max_sortino_ratio(mean_returns, cov_matrix, risk_free_rate, original_returns):
+def max_sortino_ratio(mean_returns, original_returns, risk_free_rate):
     num_assets = len(mean_returns)
-    args = (mean_returns, cov_matrix, risk_free_rate, original_returns)
+    args = (mean_returns, original_returns, risk_free_rate)
     constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
     bound = (0.0, 1.0)
     bounds = tuple(bound for asset in range(num_assets))
@@ -96,19 +108,27 @@ def min_variance(mean_returns, cov_matrix):
 
 def display_ef_with_selected(mean_returns, cov_matrix, risk_free_rate, table, returns):
     max_sharpe = max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate)
-    sdp, rp = portfolio_annualised_performance(max_sharpe['x'], mean_returns, cov_matrix)
+    # sdp, rp = portfolio_annualised_performance(max_sharpe['x'], mean_returns, cov_matrix)
+    chosen_weights = max_sharpe['x']
+    sdp = combined_annualised_volatility(chosen_weights, table)
+    rp = annualised_returns(chosen_weights, returns)
     max_sharpe_allocation = pd.DataFrame(max_sharpe.x, index=table.columns, columns=['allocation'])
     max_sharpe_allocation.allocation = [round(i*100, 2)for i in max_sharpe_allocation.allocation]
     max_sharpe_allocation = max_sharpe_allocation.T
 
-    max_sortino = max_sortino_ratio(mean_returns, cov_matrix, risk_free_rate, returns)
-    sdp_sort, rp_sort = portfolio_annualised_performance(max_sortino['x'], mean_returns, cov_matrix)  ###################
+    max_sortino = max_sortino_ratio(mean_returns, returns, risk_free_rate)
+    chosen_weights = max_sortino['x']
+    sdp_sort = combined_annualised_volatility(chosen_weights, table)
+    rp_sort = annualised_returns(chosen_weights, returns)
     max_sortino_allocation = pd.DataFrame(max_sortino.x, index=table.columns, columns=['allocation'])
     max_sortino_allocation.allocation = [round(i*100, 2)for i in max_sortino_allocation.allocation]
-    max_sortino_allocation = max_sharpe_allocation.T
+    max_sortino_allocation = max_sortino_allocation.T
 
     min_vol = min_variance(mean_returns, cov_matrix)
-    sdp_min, rp_min = portfolio_annualised_performance(min_vol['x'], mean_returns, cov_matrix)
+    # sdp_min, rp_min = portfolio_annualised_performance(min_vol['x'], mean_returns, cov_matrix)
+    chosen_weights = min_vol['x']
+    sdp_min = combined_annualised_volatility(chosen_weights, table)
+    rp_min = annualised_returns(chosen_weights, returns)
     min_vol_allocation = pd.DataFrame(min_vol.x, index=table.columns, columns=['allocation'])
     min_vol_allocation.allocation = [round(i*100, 2)for i in min_vol_allocation.allocation]
     min_vol_allocation = min_vol_allocation.T
