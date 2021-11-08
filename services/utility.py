@@ -20,7 +20,7 @@ def dict_to_df(dict_from_cache: dict, column: str) -> pd.core.frame.DataFrame:
     return pd.DataFrame(data)
 
 
-def get_start_end_date() -> Tuple[str]:
+def get_start_end_date(period: int = 2) -> Tuple[str]:
     """
     Returns as a tuple,
     1. start date: 2 years ago from the start of this month
@@ -28,9 +28,9 @@ def get_start_end_date() -> Tuple[str]:
     3. current year-month
     """
     current_month, current_year = datetime.now().strftime("%m,%Y").split(',')
-    start_date = f"{int(current_year)-5}-{current_month}-01"
+    start_date = f"{int(current_year)-period}-{current_month}-01"
     end_date = f"{current_year}-{current_month}-01"
-    return start_date, end_date, f"{current_year}-{current_month}"
+    return start_date, end_date, f"{current_year}-{current_month}_{period}years"
 
 
 def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
@@ -39,12 +39,12 @@ def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
     Get the data if found.
     If not, use pandas data reader to store the result and return it.
 
-    Returns a pandas dataframe of the close prices for the past 2 years from this month.
+    Returns a pandas dataframe of the close prices for the past 2 or 5 years from this month.
     """
     cache = redis.Redis(host="ATLAS_price_cache", port=6379)
-    start_date, end_date, year_month = get_start_end_date()
+    start_date, end_date, key = get_start_end_date()
     print(start_date, end_date)
-    key = f"{ticker}_{year_month}"
+    key = f"{ticker}_{key}"
     query = cache.hgetall(key)
 
     if not query:  # if price data not found in redis
