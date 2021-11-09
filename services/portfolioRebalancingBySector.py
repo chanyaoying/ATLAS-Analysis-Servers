@@ -99,7 +99,7 @@ def home(tickers, allocation):
 
     
     correlation = correlation.sort_values(by="portfolio", axis=1)
-    top3_inverse_sectors = correlation.columns.tolist()[0:3]
+    top3_inverse_sectors = correlation.columns.tolist()[0:2]
 
     lagging_tickers = []
     [lagging_tickers.extend(sector_dict[etf]) for etf in top3_inverse_sectors]
