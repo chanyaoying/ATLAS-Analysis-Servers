@@ -41,25 +41,26 @@ def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
 
     Returns a pandas dataframe of the close prices for the past 2 or 5 years from this month.
     """
+    print(f"Getting price data for {ticker}:")
     cache = redis.Redis(host="ATLAS_price_cache", port=6379)
     start_date, end_date, key = get_start_end_date()
-    print(start_date, end_date)
-    key = f"{ticker}_{key}"
+    key = f"{ticker}_{key}_{price_type}"
     query = cache.hgetall(key)
 
     if not query:  # if price data not found in redis
-        print("pandas data reader used")
+        print("Price data not found in cache. Pandas data reader used.")
         df = data.DataReader([ticker], 'yahoo', start_date, end_date)[price_type]
         price_dict = df_to_dict(df, key)
         with cache.pipeline() as pipe:
             for key, price_data in price_dict.items():
                 pipe.hmset(key, price_data)
-                print("inserted!")
+                print(f"{key} inserted into cache.")
             pipe.execute()
-        print("insert complete")
+        print("Insertion complete.")
         return df
     else:
-        print("Price data found.")
+        print("Price data found in cache.")
         return dict_to_df(query, key)
 
-    
+
+
