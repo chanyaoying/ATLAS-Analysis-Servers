@@ -6,5 +6,6 @@ module.exports = {
         "companyInfo": 5003,
         "financialStatements": 5004,
         "markowitzPortfolioTheory": 5005,
+        "portfolioRebalancingBySector": 5006,
     }
 }

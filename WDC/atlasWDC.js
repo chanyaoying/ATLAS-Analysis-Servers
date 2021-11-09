@@ -138,8 +138,36 @@ function main() {
             columns: markowitzPortfolioTheory_cols,
         }
 
+        // portfolioRebalancingBySector
+        const portfolioRebalancingBySector_cols = [{
+                id: "title",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "date",
+                dataType: tableau.dataTypeEnum.date
+            },
+            {
+                id: "returns",
+                dataType: tableau.dataTypeEnum.float
+            },
+            {
+                id: "allocation_type",
+                dataType: tableau.dataTypeEnum.string
+            },
+            {
+                id: "allocation_weights",
+                dataType: tableau.dataTypeEnum.string
+            }
+        ]
+        const sectorRotationStrategySchema = {
+            id: "portfolioRebalancingBySector",
+            alias: `Portfolio Rebalancing By Sector for ${tickers.join()}`,
+            columns: portfolioRebalancingBySector_cols,
+        }
+
         // Add schemas
-        schemaCallback([testSchema, arimaSchema, companyInfoSchema, financialStatementsSchema, markowitzPortfolioTheorySchema]);
+        schemaCallback([testSchema, arimaSchema, companyInfoSchema, financialStatementsSchema, markowitzPortfolioTheorySchema, sectorRotationStrategySchema]);
     };
 
     myConnector.getData = function (table, doneCallback) {
@@ -154,13 +182,14 @@ function main() {
             "Company Information": "companyInfo",
             "Financial Statements": "financialStatements",
             "Find Optimal Portfolio Allocation": "markowitzPortfolioTheory",
+            "Sector Rotation Strategy (recommendation)": "portfolioRebalancingBySector"
         }
 
         const activeSchemas = analyses.map(x => schemaTranslationTable[x])
 
         for (const activeSchema of activeSchemas) {
             if (table.tableInfo.id === activeSchema) {
-                const apiCall = `http://${window.location.href}:5000/${activeSchema}/${tickers}/${amounts}`;
+                const apiCall = `http://${window.location.hostname}:5000/${activeSchema}/${tickers}/${amounts}`;
                 console.log('apiCall :>> ', apiCall);
                 $.getJSON(apiCall, function (response) {
                     const tableData = response.data;
