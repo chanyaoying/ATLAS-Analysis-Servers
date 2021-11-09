@@ -182,7 +182,7 @@ function main() {
             "Company Information": "companyInfo",
             "Financial Statements": "financialStatements",
             "Find Optimal Portfolio Allocation": "markowitzPortfolioTheory",
-            "Sector Rotation Strategy (recommendation)": "portfolioRebalancingBySector"
+            "Portfolio Rebalancing By Sector (recommendation)": "portfolioRebalancingBySector"
         }
 
         const activeSchemas = analyses.map(x => schemaTranslationTable[x])
