@@ -84,6 +84,18 @@ services:
         depends_on:
             - ATLAS_Orchestrator
 
+    portfolioRebalancingBySector:
+        image: yaoyingsmu/atlas_service_portfoliorebalancingbysector:latest
+        build:
+            context: .
+            dockerfile: dockerfiles/portfolioRebalancingBySector.Dockerfile
+        restart: always
+        container_name: ATLAS_service_portfolioRebalancingBySector
+        ports:
+            - "5006:5006"
+        depends_on:
+            - ATLAS_Orchestrator
+
     redis:
         image: redis:alpine
         restart: always

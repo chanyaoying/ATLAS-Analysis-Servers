@@ -35,6 +35,7 @@ sector_dict = {
 @app.route("/<string:tickers>/<string:allocation>")
 def home(tickers, allocation):
 
+    # Get SPY benchmark (return series)
     benchmark_price = get_price('SPY', 'Adj Close')
     benchmark_return_series = (benchmark_price.pct_change() + 1).cumprod() - 1
     benchmark_title = 'Benchmark (SPY)'
@@ -64,6 +65,8 @@ def home(tickers, allocation):
         portfolio_2y_close.index = col_close.index
         portfolio_2y_close = portfolio_2y_close.join(col_close)
 
+    # get 3 month close (just to perform correlation analysis)
+    # cus we're assuming the cycle is 3 months
     portfolio_3m_close = portfolio_2y_close.iloc[(
         len(portfolio_2y_close.index) // 6) * 5:-1]
 
@@ -84,6 +87,7 @@ def home(tickers, allocation):
     sector_3m_close = sector_2y_close.iloc[(
         len(sector_2y_close.index) // 6) * 5:-1]
 
+    # get the weighted return series
     weighted_portfolio_3m_close = pd.DataFrame(
         (portfolio_weights * portfolio_3m_close).sum(axis=1))
     weighted_portfolio_3m_close = weighted_portfolio_3m_close.rename(columns={
@@ -93,7 +97,7 @@ def home(tickers, allocation):
     correlation = pd.DataFrame(
         all_3m_close_return_series.corr().tail(1).round(3))
 
-    # top3_inverse_sectors
+    
     correlation = correlation.sort_values(by="portfolio", axis=1)
     top3_inverse_sectors = correlation.columns.tolist()[0:3]
 
@@ -108,7 +112,7 @@ def home(tickers, allocation):
     output = []
     for suggested_ticker, weights in new_portfolios_weights.items():
 
-        types = ['sharpe', 'min_vol', 'sortino', 'equal', 'ticker_only']
+        types = ['max_sharpe', 'min_vol', 'max_sortino', 'equal_weight', 'ticker_only']
         suggested_ticker_2y_adj_close = get_price(
             suggested_ticker, 'Adj Close')
 
@@ -136,7 +140,7 @@ def home(tickers, allocation):
 
     return {
         "meta": {
-            "table_name": f"Sector Rotation Strategy for {','.join(tickers)}",
+            "table_name": f"Sector Rotation Strategy for {','.join(portfolio_tickers)}",
             "columns": ["title", "date", "returns", "allocation_type", "allocation_weights"]
         },
         "data": output,
