@@ -1,9 +1,10 @@
-from typing import Tuple
+from typing import Tuple, List
 import json
 from datetime import datetime
 import pandas as pd
 from pandas_datareader import data
 import redis
+from MPT_functions import max_sharpe_ratio, min_variance, max_sortino_ratio
 
 
 def df_to_dict(df: pd.core.frame.DataFrame, key: str) -> dict:
@@ -63,4 +64,46 @@ def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
         return dict_to_df(query, key)
 
 
+def rounded_float_list(array: List[float]) -> List[float]:
+    return list(
+        map(
+            lambda value: round(value, 2),
+            array
+        )
+    )
+
+
+def get_optimal_allocation(tickers: List[str]) -> List[float]:
+    """
+    Uses Post Modern Portfolio Theory to get the optimal weights for
+    - Maximum Sharpe Ratio
+    - Minimum Volatility
+    - Maximum Sortino Ratio
+    - Even weightage
+    - Only new stock
+    """
+    table = pd.DataFrame()
+    n = len(tickers)
+    
+    for ticker in tickers:
+        col = get_price(ticker, 'Adj Close')
+        col.columns = [ticker]
+        table.index = col.index
+        table = table.join(col)
+
+    returns = table.pct_change()
+    mean_returns = returns.mean()
+    cov_matrix = returns.cov()
+    risk_free_rate = 0.0178
+
+    max_sharpe = max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate)
+    sharpe_weights = rounded_float_list(max_sharpe['x'])
+
+    min_volatility = min_variance(mean_returns, cov_matrix)
+    min_vol_weights = rounded_float_list(min_volatility['x'])
+
+    max_sortino = max_sortino_ratio(mean_returns, returns, risk_free_rate)
+    sortino_weights = rounded_float_list(max_sortino['x'])
+
+    return sharpe_weights, min_vol_weights, sortino_weights, [1/n] * n, [0] * (n-1) + [1]
 
