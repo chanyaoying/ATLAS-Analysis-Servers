@@ -119,6 +119,23 @@ app.get("/markowitzPortfolioTheory/:tickers/:amounts", async (req, res) => {
     }
 })
 
+app.get("/portfolioRebalancingBySector/:tickers/:amounts", async (req, res) => {
+    const params = req.params
+
+    const tickers = params.tickers // str
+    const amounts = params.amounts // str
+
+    const apiCall = `http://ATLAS_service_portfolioRebalancingBySector:${config.ports['portfolioRebalancingBySector']}/${tickers}/${amounts}`
+    // const apiCall = `http://${hostname}:${config.ports['portfolioRebalancingBySector']}/${tickers}/${amounts}`
+    try {
+        const response = await axios.get(apiCall)
+        res.send(reorderJSONKeys(response.data))
+    } catch (error) {
+        console.error(error)
+        res.status(400)
+    }
+})
+
 
 app.listen(port, () => {
     console.log(`ATLAS Analysis server listening at http://${hostname}:${port}`)

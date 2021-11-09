@@ -6,13 +6,13 @@ WORKDIR /usr/src/app/
 # Install app dependencies
 COPY ./requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-RUN export FLASK_APP=markowitzPortfolioTheory
+RUN export FLASK_APP=portfolioRebalancingBySector
 
 # Run
-EXPOSE 5005
-COPY ./services/markowitzPortfolioTheory.py ./
+EXPOSE 5006
+COPY ./services/portfolioRebalancingBySector.py ./
 COPY ./services/MPT_functions.py ./
 COPY ./services/utility.py ./
 
-# CMD [ "python", "markowitzPortfolioTheory.py"]
-CMD [ "gunicorn", "-b", "0.0.0.0:5005", "markowitzPortfolioTheory:app", "-w", "4"]
+# CMD [ "python", "portfolioRebalancingBySector.py"]
+CMD [ "gunicorn", "-b", "0.0.0.0:5006", "portfolioRebalancingBySector:app", "-w", "4"]
