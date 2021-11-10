@@ -21,7 +21,7 @@ def dict_to_df(dict_from_cache: dict, column: str) -> pd.core.frame.DataFrame:
     return pd.DataFrame(data)
 
 
-def get_start_end_date(period: int = 2) -> Tuple[str]:
+def get_start_end_date(period: int) -> Tuple[str]:
     """
     Returns as a tuple,
     1. start date: 2 years ago from the start of this month
@@ -34,7 +34,7 @@ def get_start_end_date(period: int = 2) -> Tuple[str]:
     return start_date, end_date, f"{current_year}-{current_month}_{period}years"
 
 
-def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
+def get_price(ticker: str, price_type: str, period: int = 2) -> pd.core.frame.DataFrame:
     """
     Checks redis if the data for the past 2 years exist.
     Get the data if found.
@@ -44,7 +44,7 @@ def get_price(ticker: str, price_type: str) -> pd.core.frame.DataFrame:
     """
     print(f"Getting price data for {ticker}:")
     cache = redis.Redis(host="ATLAS_price_cache", port=6379)
-    start_date, end_date, key = get_start_end_date()
+    start_date, end_date, key = get_start_end_date(period)
     key = f"{ticker}_{key}_{price_type}"
     query = cache.hgetall(key)
 
