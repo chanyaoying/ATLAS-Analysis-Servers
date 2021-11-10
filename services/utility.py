@@ -73,7 +73,7 @@ def rounded_float_list(array: List[float]) -> List[float]:
     )
 
 
-def get_optimal_allocation(tickers: List[str]) -> List[float]:
+def get_optimal_allocation(tickers: List[str], original_weights: List[float]) -> List[float]:
     """
     Uses Post Modern Portfolio Theory to get the optimal weights for
     - Maximum Sharpe Ratio
@@ -81,6 +81,7 @@ def get_optimal_allocation(tickers: List[str]) -> List[float]:
     - Maximum Sortino Ratio
     - Even weightage
     - Only new stock
+    - Portfolio only
     """
     table = pd.DataFrame()
     n = len(tickers)
@@ -105,5 +106,5 @@ def get_optimal_allocation(tickers: List[str]) -> List[float]:
     max_sortino = max_sortino_ratio(mean_returns, returns, risk_free_rate)
     sortino_weights = rounded_float_list(max_sortino['x'])
 
-    return sharpe_weights, min_vol_weights, sortino_weights, [1/n] * n, [0] * (n-1) + [1]
+    return sharpe_weights, min_vol_weights, sortino_weights, [1/n] * n, [0] * (n-1) + [1], original_weights + [0]
 

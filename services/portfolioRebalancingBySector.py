@@ -107,12 +107,12 @@ def home(tickers, allocation):
     new_portfolios = [portfolio_tickers + [ticker]
                       for ticker in lagging_tickers]
     new_portfolios_weights = {lagging_tickers[i]: get_optimal_allocation(
-        new_portfolios[i]) for i in range(len(lagging_tickers))}
+        new_portfolios[i], portfolio_weights) for i in range(len(lagging_tickers))}
 
     output = []
     for suggested_ticker, weights in new_portfolios_weights.items():
 
-        types = ['max_sharpe', 'min_vol', 'max_sortino', 'equal_weight', 'ticker_only']
+        types = ['max_sharpe', 'min_vol', 'max_sortino', 'equal_weight', 'ticker_only', 'portfolio_only']
         suggested_ticker_2y_adj_close = get_price(
             suggested_ticker, 'Adj Close')
 
