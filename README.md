@@ -7,6 +7,9 @@
 
  Up till December 20th, 2021, this solution will be deployed on the cloud and will be accessible via http://rich.limpei.club.
 
+ ### Important Note
+Our LSTM price forecast model is not deployed. Click [here](./services/reference/V1-LSTM_StockMarketPrediction.ipynb) to see our exploration into LSTM.
+
 ## Getting started
 
 1. Clone this repository 
