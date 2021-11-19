@@ -1,7 +1,7 @@
 # ATLAS Analysis Servers
  For SMU IS453 Project submission
 
-[ATLAS Logo](./images/atlas_logo.png)
+![ATLAS Logo](images/atlas_logo.png)
 
  This repository contains the various backend services for various analytical solutions.
 
@@ -34,19 +34,19 @@ If not, it will be live on http://rich.limpei.club.
 1. Launch `dashboards.twb`.
 2. If you see Dashboard Unavailable, click on Edit Connection.
 
-[Step 1](images/step1.jpg)
+![Step 1](images/step1.jpg)
 
 3. From here, you can key in the assets that you are interested in. Under options, select everything.
 
-[Step 2](images/step2.jpg)
+![Step 2](images/step2.jpg)
 
 4. If required, set up the data tables in this manner:
 
-[Step 3](images/step3.jpg)
+![Step 3](images/step3.jpg)
 
 5. Click on 'Story' to view all the dashboards.
 
-[Step 4](images/step4.jpg)
+![Step 4](images/step4.jpg)
 
 
 ## License
