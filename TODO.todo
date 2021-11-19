@@ -1,3 +1,0 @@
-deploy:
-    - deploy services on cloud
-    - ci/cd after the project
