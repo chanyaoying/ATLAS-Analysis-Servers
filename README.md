@@ -5,6 +5,9 @@
 
  This repository contains the various backend services for various analytical solutions.
 
+```diff
+- NOTE: Not available as of 15 Dec. The server cost exceeded my budget. Email me if you need access to it.
+```
  Up till December 20th, 2021, this solution will be deployed on the cloud and will be accessible via http://rich.limpei.club.
 
  ### Important Notes
